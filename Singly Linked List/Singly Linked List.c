@@ -43,29 +43,73 @@ void Prepend(LinkedList* list, int value){
 }
 
 
+void Delete(LinkedList* list, int position){
+    if(position < 0 || position > list->numberOfNodes)
+        return;
+
+    if(position == 1){
+        Node* pointer = list->first;
+        if(list->numberOfNodes == 1)
+            list->first = NULL;
+        else
+            list->first = list->first->next;
+        free(pointer);
+        list->numberOfNodes--;
+
+        return;
+    }
+
+    Node* pointer = list->first;
+    Node* previous;
+
+    for(int i = 0; i<position; i++){
+        pointer = pointer->next;
+
+        if(i == position-2)
+            previous = pointer;
+    }
+    previous->next = pointer->next;
+
+    free(pointer);
+    list->numberOfNodes--;
+}
+
+
 void PrintList(LinkedList* list){
     int i = 0;
     Node* node;
+    Node** pointer;
+    LinkedList** llPointer = &list;
 
-    printf("The list have %d nodes \n\n",list->numberOfNodes);
+    int listBytesSize = list->numberOfNodes*sizeof(Node) + sizeof(**llPointer);
+
+    printf("The list have %d nodes, occupying %d bytes, %.1f bytes per node\n\n",list->numberOfNodes,listBytesSize,(float)listBytesSize/list->numberOfNodes);
 
     if(list->numberOfNodes > 0){
         node = list->first;
 
-        printf("ID = Value -> Value of Next \n\n",i++,node->value);
+        printf("ID = Value -> Value of Next | Addresses \n\n");
         while(1){
             printf("%d = %d ",i++,node->value);
 
             if(node->next != NULL){
-                printf("-> %d \n",node->next->value);
+                printf("-> %d \t",node->next->value);
+                pointer = &node;
+                printf("| %x -> ",*pointer);
+                pointer = &node->next;
+                printf("%x \n",*pointer);
                 node = node->next;
             }
             else{
-                printf("-> NULL \n");
-                return;
+                printf("-> NULL \t");
+                pointer = &node;
+                printf("| %x -> NULL \n",*pointer);
+                break;
             }
         }
     }
+
+    printf("####################################\n");
 }
 
 
@@ -81,6 +125,9 @@ int main(void){
     Append(&list,15);
     Append(&list,20);
     Prepend(&list,5);
+
+    PrintList(&list);
+    Delete(&list,2);
 
     PrintList(&list);
 
