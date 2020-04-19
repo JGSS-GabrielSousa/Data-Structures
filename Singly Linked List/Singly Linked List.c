@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Node{
     struct Node* next;
@@ -10,10 +11,11 @@ typedef struct LinkedList{
     struct Node* first;
 }LinkedList;
 
+
 void Append(LinkedList* list, int value){
-    Node* aux = (Node*)malloc(sizeof(Node));
-    aux->value = value;
-    aux->next = NULL;
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->value = value;
+    newNode->next = NULL;
 
     if(list->numberOfNodes > 0){
         Node* pointer = list->first;
@@ -22,43 +24,63 @@ void Append(LinkedList* list, int value){
             pointer = pointer->next;
         }
 
-        pointer->next = aux;
-        list->numberOfNodes = list->numberOfNodes + 1;
+        pointer->next = newNode;
     }else{
-        list->first = aux;
-        list->numberOfNodes = list->numberOfNodes + 1;
+        list->first = newNode;
     }
+
+    list->numberOfNodes++;
 }
+
+
+void Prepend(LinkedList* list, int value){
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->value = value;
+    newNode->next = list->first;
+
+    list->first = newNode;
+    list->numberOfNodes++;
+}
+
 
 void PrintList(LinkedList* list){
     int i = 0;
     Node* node;
 
-    printf("The list have %d nodes \n",list->numberOfNodes);
+    printf("The list have %d nodes \n\n",list->numberOfNodes);
 
     if(list->numberOfNodes > 0){
         node = list->first;
 
-        printf("ID = Value \n",i++,node->value);
+        printf("ID = Value -> Value of Next \n\n",i++,node->value);
         while(1){
-            printf("%d = %d \n",i++,node->value);
+            printf("%d = %d ",i++,node->value);
 
-            if(node->next != NULL)
+            if(node->next != NULL){
+                printf("-> %d \n",node->next->value);
                 node = node->next;
-            else
+            }
+            else{
+                printf("-> NULL \n");
                 return;
+            }
         }
     }
 }
 
+
 int main(void){
     printf("\t Singly Linked List \n\n");
 
-    LinkedList list = {.numberOfNodes = 0};
+    LinkedList list = {
+        .numberOfNodes = 0,
+        .first = NULL
+    };
 
-    Append(&list,5);
     Append(&list,10);
     Append(&list,15);
+    Append(&list,20);
+    Prepend(&list,5);
 
     PrintList(&list);
 
