@@ -1,3 +1,3 @@
 #Singly Linked List
 
-![](https://imgur.com/N2lSNot)
+![](https://i.imgur.com/N2lSNot.png)
