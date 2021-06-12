@@ -1,48 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void Merge(int* array, const int begin, const int middle, const int end){
+void Merge(int* array, int begin, int middle, int end){
     int i, j, k;
-    int* tempArray = (int*)malloc((end - begin+1)*sizeof(int));
+    int n1 = middle - begin + 1;
+    int n2 = end - middle;
+    int leftTempArray[n1];
+    int rightTempArray[n2];
 
-    i = begin;
-    j = middle + 1;
+    for(i = 0; i < n1; i++)
+        leftTempArray[i] = array[begin + i];
+    for(j = 0; j < n2; j++)
+        rightTempArray[j] = array[middle + 1 + j];
+
+    i = 0;
+    j = 0;
     k = begin;
 
-    while(i <= middle && j <= end){
-        if(array[i] < array[j]){
-            tempArray[k] = array[i];
+    while(i < n1 && j < n2){
+        if(leftTempArray[i] <= rightTempArray[j]){
+            array[k] = leftTempArray[i];
             i++;
         }
         else{
-            tempArray[k] = array[j];
+            array[k] = rightTempArray[j];
             j++;
         }
         k++;
     }
 
-    while(i <= middle){
-        tempArray[k] = array[i];
+    while(i < n1){
+        array[k] = leftTempArray[i];
         i++;
         k++;
     }
 
-    while(j <= end){
-        tempArray[k] = array[j];
+    while(j < n2){
+        array[k] = rightTempArray[j];
         j++;
         k++;
     }
-
-    for(int aux = begin; aux <= end; aux++)
-        array[aux] = tempArray[aux];
 }
 
-void MergeSort(const int* array, const int begin, const int end){
+void MergeSort(int* array, int begin, int end){
     if(begin < end){
-        int middle = (end+begin)/2;
+        int middle = begin + (end - begin) / 2;
 
         MergeSort(array, begin, middle);
-        MergeSort(array, middle+1, end);
+        MergeSort(array, middle + 1, end);
+
         Merge(array, begin, middle, end);
     }
 }
@@ -60,15 +66,15 @@ void PrintArray(const int* array, const int arrayLength){
 
 int main(){
     int array[] = {5,10,80,6,99,70,64,60,42,23,90,32,68};
-    int arraySize = sizeof(array)/sizeof(int);
+    int arraySize = sizeof(array) / sizeof(int);
 
     printf("Rand Array: ");
-    PrintArray(array,arraySize);
+    PrintArray(array, arraySize);
 
-    MergeSort(array, 0, arraySize);
+    MergeSort(array, 0, arraySize - 1);
 
     printf("Sorted Array: ");
-    PrintArray(array,arraySize);
+    PrintArray(array, arraySize);
 
     return 0;
 }
