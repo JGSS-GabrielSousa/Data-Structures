@@ -22,16 +22,16 @@ int Pop(Stack* stack){
 }
 
 void Print(Stack* stack){
+    printf("\n###########################\n");
     printf(" Top = %d \n",stack->top);
     printf("Size = %d \n",stack->size);
     printf("\n");
     printf("ID - Value: \n");
 
-    for(int i=0; i <= stack->top; i++){
+    for(int i=0; i < stack->size; i++){
         printf("%d - %d\n",i,stack->slot[i]);
     }
 
-    printf("\n###########################\n");
 }
 
 int main(void){
@@ -47,7 +47,7 @@ int main(void){
     Push(&stack,1);
     Push(&stack,9);
 
-    printf("Pop: %d \n\n",Pop(&stack));
+    printf("Pop: %d \n",Pop(&stack));
 
     Print(&stack);
 
