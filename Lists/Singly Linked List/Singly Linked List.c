@@ -11,6 +11,42 @@ typedef struct LinkedList{
     struct Node* first;
 }LinkedList;
 
+extern void Append(LinkedList*, int);
+extern void Prepend(LinkedList*, int);
+extern void Delete(LinkedList*, int);
+extern void PrintNode(Node*);
+extern void PrintList(LinkedList*);
+extern Node* Search(LinkedList*, int);
+
+
+int main(void){
+    printf("\t Singly Linked List \n\n");
+
+    LinkedList list = {
+        .numberOfNodes = 0,
+        .first = NULL
+    };
+
+    Append(&list,15);
+    Append(&list,20);
+    Append(&list,25);
+    Append(&list,30);
+    Prepend(&list,10);
+    Prepend(&list,5);
+    // Expected: 5-10-15-20-25-30
+
+    PrintList(&list);
+    Delete(&list,0);
+    Delete(&list,2);
+    // Expected: 10-15-25-30
+
+    PrintNode(Search(&list,25));
+
+    PrintList(&list);
+
+    return 0;
+}
+
 
 void Append(LinkedList* list, int value){
     Node* newNode = (Node*)malloc(sizeof(Node));
@@ -73,6 +109,17 @@ void Delete(LinkedList* list, int position){
 }
 
 
+Node* Search(LinkedList* list, int value){
+    Node* pointer = list->first;
+
+    for(int i = 0; i < list->numberOfNodes; i++)
+        if(pointer->value == value)
+            break;
+
+    return pointer;
+}
+
+
 void PrintList(LinkedList* list){
     int i = 0;
     Node* node;
@@ -81,17 +128,17 @@ void PrintList(LinkedList* list){
 
     int listBytesSize = list->numberOfNodes*sizeof(Node) + sizeof(**llPointer);
 
+    printf("####################################\n");
     printf("The list have %d nodes, occupying %d bytes, %.1f bytes per node\n\n",list->numberOfNodes,listBytesSize,(float)listBytesSize/list->numberOfNodes);
 
     if(list->numberOfNodes > 0){
         node = list->first;
 
-        printf("ID = Value -> Value of Next | Addresses \n\n");
+        printf("ID = Value | Address -> Address of Next Node \n\n");
         while(1){
             printf("%d = %d ",i++,node->value);
 
             if(node->next != NULL){
-                printf("-> %d \t",node->next->value);
                 pointer = &node;
                 printf("| %x -> ",*pointer);
                 pointer = &node->next;
@@ -99,38 +146,19 @@ void PrintList(LinkedList* list){
                 node = node->next;
             }
             else{
-                printf("-> NULL \t");
                 pointer = &node;
                 printf("| %x -> NULL \n",*pointer);
                 break;
             }
         }
     }
+}
 
+
+void PrintNode(Node* node){
     printf("####################################\n");
+    printf("       Value: %d \n",node->value);
+    printf("     Address: %x \n",node);
+    printf("Next Address: %x \n",node->next);
 }
 
-
-int main(void){
-    printf("\t Singly Linked List \n\n");
-
-    LinkedList list = {
-        .numberOfNodes = 0,
-        .first = NULL
-    };
-
-    Append(&list,15);
-    Append(&list,20);
-    Append(&list,25);
-    Append(&list,30);
-    Prepend(&list,10);
-    Prepend(&list,5);
-
-    PrintList(&list);
-    Delete(&list,0);
-    Delete(&list,2);
-
-    PrintList(&list);
-
-    return 0;
-}
