@@ -44,28 +44,26 @@ void Prepend(LinkedList* list, int value){
 
 
 void Delete(LinkedList* list, int position){
+    Node* pointer = list->first;
+    Node* previous;
+
     if(position < 0 || position > list->numberOfNodes)
         return;
 
-    if(position == 1){
-        Node* pointer = list->first;
+    if(position == 0){
         if(list->numberOfNodes == 1)
             list->first = NULL;
         else
             list->first = list->first->next;
         free(pointer);
         list->numberOfNodes--;
-
         return;
     }
 
-    Node* pointer = list->first;
-    Node* previous;
-
-    for(int i = 0; i<position; i++){
+    for(int i = 0; i < position; i++){
         pointer = pointer->next;
 
-        if(i == position-2)
+        if(i == position - 2)
             previous = pointer;
     }
     previous->next = pointer->next;
@@ -121,12 +119,15 @@ int main(void){
         .first = NULL
     };
 
-    Append(&list,10);
     Append(&list,15);
     Append(&list,20);
+    Append(&list,25);
+    Append(&list,30);
+    Prepend(&list,10);
     Prepend(&list,5);
 
     PrintList(&list);
+    Delete(&list,0);
     Delete(&list,2);
 
     PrintList(&list);
