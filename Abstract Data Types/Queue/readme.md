@@ -1,1 +1,1 @@
-![](https://upload.wikimedia.org/wikipedia/commons/5/52/Data_Queue.svg)
+![](https://www.javascripttutorial.net/wp-content/uploads/2016/08/JavaScript-Queue-Illustration.png)
