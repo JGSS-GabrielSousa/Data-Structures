@@ -11,7 +11,7 @@ struct Node{
 
 struct Node* hashTable[BUCKETS];
 
-extern unsigned simpleHashFunc(char*, const char);
+unsigned long djb2HashFunc(unsigned char *str);
 extern void insert(char*);
 extern void clearHashTable();
 extern void hashTableDebug();
@@ -41,21 +41,19 @@ int main(){
 }
 
 
-unsigned simpleHashFunc(char* input, const char typeOfReturn){
-    unsigned hashValue;
+unsigned long djb2HashFunc(unsigned char *str){
+    unsigned long hash = 5381;
+    int c;
 
-    for(hashValue = 0; *input != '\0'; input++)
-        hashValue = *input + 17*hashValue;
+    while(c = *str++)
+        hash = ((hash << 5) + hash) + c; // hash * 33 + c
 
-    if(typeOfReturn == 0)
-        return hashValue % BUCKETS;
-    else
-        return hashValue;
+    return hash;
 }
 
 
 void hashDebug(char* input){
-    printf("%s = %d \n", input, simpleHashFunc(input, 1));
+    printf("%s = %d \n", input, djb2HashFunc(input));
 }
 
 
@@ -68,7 +66,7 @@ void insert(char data[]){
     newNode->next = NULL;
 
     char collision = 0;
-    int index = simpleHashFunc(data, 0);
+    int index = djb2HashFunc(data) % BUCKETS;
 
 
     if(hashTable[index] == NULL){
