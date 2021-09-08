@@ -10,7 +10,7 @@ typedef struct{
 extern void allocate(array*, unsigned);
 extern void set(array*, unsigned, int);
 extern int get(array*, unsigned);
-extern array* merge(array*, array*, array*);
+extern void merge(array*, array*, array*);
 extern void printArray(array* arr);
 
 
